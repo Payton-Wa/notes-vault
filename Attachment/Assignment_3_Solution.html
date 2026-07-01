@@ -1,0 +1,1901 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EEE205 第 3 次作业解答 / 作业要求翻译</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --paper: #fffdf8;
+      --ink: #1f2933;
+      --muted: #5f6c7b;
+      --line: #d7cfc3;
+      --accent: #0f766e;
+      --accent-soft: #d8efe9;
+      --code: #f1ede5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, #efe8db 0, transparent 28rem),
+        linear-gradient(180deg, #f8f5ef 0, var(--bg) 100%);
+      color: var(--ink);
+      font: 16px/1.6 Georgia, "Times New Roman", serif;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 32px auto;
+      padding: 0 20px 40px;
+    }
+
+    .sheet {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(31, 41, 51, 0.08);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 40px 42px 24px;
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(15, 118, 110, 0) 60%),
+        linear-gradient(180deg, #fffefb, #f8f4ec);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.25;
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 2.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin-top: 34px;
+      font-size: 1.55rem;
+      color: #153b41;
+    }
+
+    h3 {
+      margin-top: 26px;
+      font-size: 1.18rem;
+      color: #1d4f57;
+    }
+
+    h4 {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #285962;
+    }
+
+    .meta {
+      color: var(--muted);
+      max-width: 68ch;
+    }
+
+    main {
+      padding: 8px 42px 42px;
+    }
+
+    p, li {
+      max-width: 76ch;
+    }
+
+    ul {
+      padding-left: 22px;
+    }
+
+    code {
+      padding: 0.08rem 0.35rem;
+      border-radius: 6px;
+      background: var(--code);
+      font: 0.94em/1.4 "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    pre {
+      margin: 16px 0 20px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fcfaf5;
+      font: 0.93rem/1.45 "SFMono-Regular", Menlo, Consolas, monospace;
+      color: #243342;
+    }
+
+    .diagram {
+      background:
+        linear-gradient(180deg, #fdfbf6, #f7f2e9);
+      border-left: 5px solid var(--accent);
+    }
+
+    .state-machine {
+      margin: 18px 0 24px;
+      overflow-x: auto;
+    }
+
+    .state-machine figcaption {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .state-svg {
+      display: block;
+      width: 100%;
+      min-width: 760px;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fcfaf5;
+    }
+
+    .state-svg .state {
+      fill: #fffdf8;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+
+    .state-svg .state-alarm {
+      fill: #fff7ed;
+      stroke: #b45309;
+    }
+
+    .state-svg .edge {
+      fill: none;
+      stroke: #374151;
+      stroke-width: 1.8;
+    }
+
+    .state-svg .self-edge {
+      fill: none;
+      stroke: #64748b;
+      stroke-width: 1.6;
+    }
+
+    .state-svg text {
+      fill: var(--ink);
+      font-family: "SFMono-Regular", Menlo, Consolas, "Microsoft YaHei", sans-serif;
+      font-size: 13px;
+    }
+
+    .state-svg .state-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .state-svg .state-desc {
+      font-size: 13px;
+    }
+
+    .state-svg .output {
+      fill: #285962;
+      font-size: 12px;
+    }
+
+    .state-svg .edge-label {
+      fill: #111827;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .note {
+      margin: 18px 0;
+      padding: 14px 16px;
+      border: 1px solid #b9ddd6;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: #18464a;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      font-size: 0.97rem;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      margin: 14px 0 22px;
+    }
+
+    .table-scroll table {
+      margin: 0;
+    }
+
+    .wide-table {
+      min-width: 900px;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #f6f0e4;
+    }
+
+    .section-number {
+      display: inline-block;
+      min-width: 2.1rem;
+      margin-right: 0.2rem;
+      color: var(--accent);
+    }
+
+    .summary {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border: 1px dashed #9cc9bf;
+      border-radius: 14px;
+      background: #fbfefc;
+    }
+
+    .summary strong {
+      color: #134f4b;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+
+      .sheet {
+        border: 0;
+        box-shadow: none;
+        border-radius: 0;
+      }
+
+      header, main {
+        padding-left: 28px;
+        padding-right: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <article class="sheet">
+      <header>
+        <h1>EEE205 第 3 次作业解答 / 作业要求翻译</h1>
+        <p class="meta">
+          使用分层有限状态机设计地铁门禁系统。
+          此 HTML 版本为独立文件，包含已翻译的作业要求，并且不依赖 Markdown 或 Mermaid 渲染。
+        </p>
+      </header>
+      <main>
+        <h2>作业要求完整翻译</h2>
+        <p>
+          以下为 PDF 中“设计要求”和“题目要求”的完整中文翻译，便于直接对照阅读。
+        </p>
+
+        <h3>设计要求</h3>
+        <ol>
+          <li>当没有乘客通过时，系统处于待机状态。</li>
+          <li>
+            当乘客成功完成支付后，支付终端会在 <code>PAYTERM</code> 信号上输出高电平，以通知系统允许通行；否则，支付终端输出低电平。
+            <div class="note">
+              <strong>PAYTERM</strong><br>
+              低电平：待机<br>
+              高电平：支付成功
+            </div>
+          </li>
+          <li>
+            门禁系统在接收到支付终端的高电平信号后，应立即打开闸门。若乘客通过完成，则闸门关闭。闸门控制信号 <code>GATE_OPEN</code> 为高电平时，闸门打开；为低电平时，闸门关闭。
+            <div class="note">
+              <strong>闸门</strong><br>
+              低电平：闸门关闭<br>
+              高电平：闸门打开
+            </div>
+          </li>
+          <li>
+            系统中有 3 个红外传感器 <code>IR1</code> 到 <code>IR3</code>，用于检测乘客是否成功通过。若某个红外传感器被乘客遮挡，无法接收到红外光源，则其输出为高电平；否则输出为低电平。
+            <div class="note">
+              <strong>IRx</strong><br>
+              低电平：未遮挡<br>
+              高电平：被遮挡
+            </div>
+          </li>
+          <li>
+            “成功通过”定义为：乘客在 1 分钟内进入并离开门禁系统。乘客进入，表示传感器 <code>IR1</code> 到 <code>IR3</code> 按顺序依次被遮挡。乘客离开，表示传感器 <code>IR1</code> 到 <code>IR3</code> 按顺序依次重新暴露于红外光源，即依次恢复为未遮挡状态。
+          </li>
+          <li>
+            儿童乘客在任意时刻可能只会遮挡 1 个传感器。成年乘客在任意时刻最多会同时遮挡 2 个相邻传感器；携带行李的乘客在任意时刻最多可能同时遮挡全部 3 个传感器。
+          </li>
+          <li>
+            乘客有 1 分钟时间完成通行。若超时且乘客仍在闸机内，系统应报警。系统输出 <code>ALARM</code> 高电平表示报警，低电平表示清除报警。或者，若超时但没有乘客正在通过，则闸门关闭。报警会在乘客离开传感器检测区域后被清除。
+            <div class="note">
+              <strong>报警</strong><br>
+              低电平：报警清除<br>
+              高电平：报警
+            </div>
+          </li>
+          <li>
+            当定时器的使能端 <code>TIMER_ON</code> 置为高电平时，定时器开始计时；当达到 1 分钟时，在 <code>TIME_OUT</code> 引脚输出高电平。当 <code>TIMER_ON</code> 为低电平时，定时器复位，同时 <code>TIME_OUT</code> 输出低电平。
+            <div class="note">
+              <strong>TIMER_ON</strong><br>
+              低电平：复位定时器并清除 <code>TIME_OUT</code><br>
+              高电平：启动定时器
+            </div>
+            <div class="note">
+              <strong>TIME_OUT</strong><br>
+              低电平：未超时<br>
+              高电平：已超时
+            </div>
+          </li>
+        </ol>
+
+        <h3>题目要求</h3>
+        <ul>
+          <li>
+            <strong>(a)</strong> 列出该有限状态机的输入和输出。<br>
+            （10 分）
+          </li>
+          <li>
+            <strong>(b)</strong> 画出满足上述功能要求的有限状态机状态图。描述每个状态，简要说明该状态在有限状态机中的作用，以及状态之间如何转换。并简要说明各状态中所使用输入/输出信号的功能。<br>
+            （40 分，其中要求 (1)-(3) 占 10 分，要求 (4)-(6) 占 20 分，要求 (7)-(8) 占 10 分，要求描述清晰。）
+          </li>
+          <li>
+            <strong>提示</strong>：有时把所有功能放进一个统一的有限状态机中会比较复杂。工程师通常采用分层设计。每个功能设计成一个子有限状态机。因此，一个复杂系统可被分解为一个主有限状态机和若干子有限状态机。有限状态机之间通过额外定义的输入/输出信号进行通信。
+          </li>
+          <li>
+            <strong>(c)</strong> 选择主有限状态机或统一有限状态机，画出其 ASM 图。<br>
+            （10 分）
+          </li>
+          <li>
+            <strong>(d)</strong> 进行状态编码。通过状态转移表、卡诺图或 Quine-McCluskey 方法求出该有限状态机的逻辑。<br>
+            （20 分）
+          </li>
+          <li>
+            <strong>(e)</strong> 画出各有限状态机的电路原理图。<br>
+            （20 分）
+          </li>
+        </ul>
+
+        <div class="summary">
+          <p><strong>下面开始是中文版解答正文。</strong></p>
+        </div>
+
+        <h2><span class="section-number">1.</span>设计思路</h2>
+        <p>
+          本解答采用<strong>分层有限状态机</strong>，与作业提示相匹配。
+          完整系统分为三个部分：
+        </p>
+        <ul>
+          <li><strong>主有限状态机</strong>：处理待机、闸门控制、超时和报警。</li>
+          <li><strong>通行检测子有限状态机</strong>：检查乘客是否按正确顺序通过三个红外传感器。</li>
+          <li><strong>1 分钟定时器</strong>：作为由 <code>TIMER_ON</code> 控制的外部模块。</li>
+        </ul>
+        <p>
+          这种做法比把所有行为强行放入一个大型统一有限状态机更清晰。
+        </p>
+
+        <h2><span class="section-number">2.</span>(a) 有限状态机的输入和输出</h2>
+
+        <h3>2.1 外部系统信号</h3>
+        <p><strong>输入</strong></p>
+        <ul>
+          <li><code>PAYTERM</code>：<code>1</code> 表示支付成功，<code>0</code> 表示待机。</li>
+          <li><code>IR1</code>、<code>IR2</code>、<code>IR3</code>：红外传感器输出。</li>
+          <li><code>TIME_OUT</code>：1 分钟定时器的输出。</li>
+          <li><code>CLK</code>：同步有限状态机实现所需的时钟输入。</li>
+          <li><code>RESET</code>：复位输入。</li>
+        </ul>
+
+        <p><strong>输出</strong></p>
+        <ul>
+          <li><code>GATE_OPEN</code>：<code>1</code> 打开闸门，<code>0</code> 关闭闸门。</li>
+          <li><code>TIMER_ON</code>：<code>1</code> 使能定时器，<code>0</code> 复位定时器。</li>
+          <li><code>ALARM</code>：<code>1</code> 触发报警，<code>0</code> 清除报警。</li>
+        </ul>
+
+        <h3>2.2 分层设计中使用的内部信号</h3>
+        <p>通行检测子有限状态机为主有限状态机生成以下内部信号：</p>
+        <ul>
+          <li><code>PASS_ACTIVE</code>：乘客位于传感器检测区域内，或正在通行。</li>
+          <li><code>PASS_DONE</code>：一次有效通行已经完成。</li>
+          <li><code>AREA_OCCUPIED</code>：至少一个传感器被遮挡，即检测区域被占用。</li>
+        </ul>
+
+        <p><strong>主有限状态机输入</strong></p>
+        <ul>
+          <li><code>PAYTERM</code>, <code>TIME_OUT</code>, <code>PASS_ACTIVE</code>, <code>PASS_DONE</code>, <code>AREA_OCCUPIED</code>, <code>CLK</code>, <code>RESET</code></li>
+        </ul>
+
+        <p><strong>主有限状态机输出</strong></p>
+        <ul>
+          <li><code>GATE_OPEN</code>, <code>TIMER_ON</code>, <code>ALARM</code></li>
+        </ul>
+
+        <p><strong>通行子有限状态机输入</strong></p>
+        <ul>
+          <li><code>IR1</code>, <code>IR2</code>, <code>IR3</code>, <code>CLK</code>, <code>RESET</code></li>
+        </ul>
+
+        <p><strong>通行子有限状态机输出</strong></p>
+        <ul>
+          <li><code>PASS_ACTIVE</code>, <code>PASS_DONE</code>, <code>AREA_OCCUPIED</code></li>
+        </ul>
+
+        <h2><span class="section-number">3.</span>(b) 状态图与状态说明</h2>
+
+        <h3>3.1 主有限状态机</h3>
+        <h4>状态定义</h4>
+        <ul>
+          <li><code>A</code>：待机状态，未接受已付款乘客，闸门关闭，定时器复位，无报警。</li>
+          <li><code>B</code>：等待进入状态，已接受支付，闸门打开，定时器运行，等待乘客进入。</li>
+          <li><code>C</code>：通行状态，乘客已经进入并正在通过闸门，定时器继续运行。</li>
+          <li><code>D</code>：报警状态，乘客仍在传感器检测区域内时 1 分钟已到，系统保持报警，直到检测区域变为空。</li>
+        </ul>
+
+        <h4>主有限状态机状态图（Moore 型）</h4>
+        <figure class="state-machine" aria-label="主有限状态机 Moore 型状态图">
+          <figcaption>Moore 型写法：输出写在状态内部，边上只标转换条件。</figcaption>
+          <svg class="state-svg" viewBox="0 0 900 520" role="img" aria-labelledby="main-fsm-title">
+            <title id="main-fsm-title">主有限状态机 Moore 型状态图</title>
+            <defs>
+              <marker id="arrow-main" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#374151"></path>
+              </marker>
+            </defs>
+
+            <path class="edge" d="M45,190 L80,190" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="36" y="175">开始</text>
+
+            <ellipse class="state" cx="160" cy="190" rx="82" ry="58"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="160" y="168">A 待机</tspan>
+              <tspan class="output" x="160" y="191">GATE_OPEN=0</tspan>
+              <tspan class="output" x="160" y="209">TIMER_ON=0, ALARM=0</tspan>
+            </text>
+
+            <ellipse class="state" cx="405" cy="190" rx="92" ry="58"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="405" y="168">B 等待进入</tspan>
+              <tspan class="output" x="405" y="191">GATE_OPEN=1</tspan>
+              <tspan class="output" x="405" y="209">TIMER_ON=1, ALARM=0</tspan>
+            </text>
+
+            <ellipse class="state" cx="650" cy="190" rx="88" ry="58"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="650" y="168">C 通行中</tspan>
+              <tspan class="output" x="650" y="191">GATE_OPEN=1</tspan>
+              <tspan class="output" x="650" y="209">TIMER_ON=1, ALARM=0</tspan>
+            </text>
+
+            <ellipse class="state state-alarm" cx="650" cy="395" rx="92" ry="58"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="650" y="373">D 报警状态</tspan>
+              <tspan class="output" x="650" y="396">GATE_OPEN=1</tspan>
+              <tspan class="output" x="650" y="414">TIMER_ON=0, ALARM=1</tspan>
+            </text>
+
+            <path class="edge" d="M242,190 L312,190" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="260" y="172">PAYTERM=1</text>
+
+            <path class="edge" d="M497,190 L562,190" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="508" y="172">PASS_ACTIVE=1</text>
+
+            <path class="edge" d="M650,248 L650,337" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="667" y="285">TIME_OUT=1</text>
+            <text class="edge-label" x="667" y="303">AREA_OCCUPIED=1</text>
+
+            <path class="edge" d="M584,228 C470,330 310,330 205,236" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="342" y="316">PASS_DONE=1 或</text>
+            <text class="edge-label" x="324" y="334">TIME_OUT=1 且 AREA_OCCUPIED=0</text>
+
+            <path class="edge" d="M357,138 C300,76 208,82 175,132" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="215" y="88">TIME_OUT=1 且 PASS_ACTIVE=0</text>
+
+            <path class="edge" d="M572,417 C410,492 190,432 157,249" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="315" y="466">AREA_OCCUPIED=0</text>
+
+            <path class="self-edge" d="M117,139 C70,78 166,42 195,126" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="83" y="70">PAYTERM=0</text>
+
+            <path class="self-edge" d="M405,132 C432,70 500,88 486,151" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="442" y="86">其他情况</text>
+
+            <path class="self-edge" d="M696,141 C770,72 828,152 738,180" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="762" y="110">其他情况</text>
+
+            <path class="self-edge" d="M724,361 C812,330 820,450 730,430" marker-end="url(#arrow-main)"></path>
+            <text class="edge-label" x="766" y="392">AREA_OCCUPIED=1</text>
+          </svg>
+        </figure>
+
+        <h4>主有限状态机在各状态下的输出</h4>
+        <ul>
+          <li><code>A</code>: <code>GATE_OPEN=0</code>, <code>TIMER_ON=0</code>, <code>ALARM=0</code></li>
+          <li><code>B</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=1</code>, <code>ALARM=0</code></li>
+          <li><code>C</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=1</code>, <code>ALARM=0</code></li>
+          <li><code>D</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=0</code>, <code>ALARM=1</code></li>
+        </ul>
+
+        <div class="note">
+          在 <code>B</code> 中，如果定时器超时且无人进入，系统只需关闭闸门。
+          在 <code>D</code> 中，闸门保持打开，便于乘客离开；只有当传感器检测区域变为空，即 <code>AREA_OCCUPIED=0</code> 后，报警才会清除。
+        </div>
+
+        <h3>3.2 通行检测子有限状态机</h3>
+        <p>
+          为满足要求 (4) 到 (6)，传感器检测顺序必须从 <code>IR1</code> 逐步移动到 <code>IR3</code>。
+        </p>
+
+        <h4>有用的传感器分类</h4>
+        <p>由 <code>IR1 IR2 IR3</code> 定义四个组合逻辑条件：</p>
+        <ul>
+          <li><code>C0 = ~IR1 . ~IR2 . ~IR3</code>：无传感器被遮挡，模式为 <code>000</code></li>
+          <li><code>C1 = IR1 . ~IR3</code>：乘客位于入口侧，有效模式为 <code>100</code> 或 <code>110</code></li>
+          <li><code>C2 = IR2</code>：乘客占据中间区域，有效模式为 <code>010</code>、<code>110</code>、<code>111</code>、<code>011</code></li>
+          <li><code>C3 = ~IR1 . IR3</code>：乘客位于出口侧，有效模式为 <code>001</code> 或 <code>011</code></li>
+        </ul>
+
+        <p>这可以支持不同乘客的预期移动模式：</p>
+        <ul>
+          <li>儿童乘客：<code>100 -&gt; 010 -&gt; 001 -&gt; 000</code></li>
+          <li>成年乘客：<code>110 -&gt; 111/010 -&gt; 011 -&gt; 000</code></li>
+          <li>携带行李的乘客：<code>100 -&gt; 110 -&gt; 111 -&gt; 011 -&gt; 001 -&gt; 000</code></li>
+        </ul>
+
+        <p>
+          像 <code>101</code> 这样非相邻传感器同时被遮挡的无效模式，不会被视为成功通行。
+        </p>
+
+        <h4>通行子有限状态机状态</h4>
+        <ul>
+          <li><code>P0</code>：检测区域为空。</li>
+          <li><code>P1</code>：入口侧先被占用，说明乘客从正确方向开始通行。</li>
+          <li><code>P2</code>：乘客位于通道内部。</li>
+          <li><code>P3</code>：乘客正从出口侧离开。</li>
+        </ul>
+
+        <h4>通行子有限状态机状态图（Mealy 型）</h4>
+        <figure class="state-machine" aria-label="通行检测子有限状态机 Mealy 型状态图">
+          <figcaption>Mealy 型写法：边上标为“输入条件 / 输出”。这里重点标出 <code>PASS_DONE</code> 的转移输出。</figcaption>
+          <svg class="state-svg" viewBox="0 0 900 440" role="img" aria-labelledby="passage-fsm-title">
+            <title id="passage-fsm-title">通行检测子有限状态机 Mealy 型状态图</title>
+            <defs>
+              <marker id="arrow-passage" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#374151"></path>
+              </marker>
+            </defs>
+
+            <path class="edge" d="M44,205 L86,205" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="35" y="188">开始</text>
+
+            <ellipse class="state" cx="160" cy="205" rx="74" ry="52"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="160" y="192">P0</tspan>
+              <tspan class="state-desc" x="160" y="214">检测区域为空</tspan>
+            </text>
+
+            <ellipse class="state" cx="380" cy="205" rx="76" ry="52"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="380" y="192">P1</tspan>
+              <tspan class="state-desc" x="380" y="214">入口侧</tspan>
+            </text>
+
+            <ellipse class="state" cx="600" cy="205" rx="76" ry="52"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="600" y="192">P2</tspan>
+              <tspan class="state-desc" x="600" y="214">中间区域</tspan>
+            </text>
+
+            <ellipse class="state" cx="780" cy="205" rx="76" ry="52"></ellipse>
+            <text text-anchor="middle">
+              <tspan class="state-name" x="780" y="192">P3</tspan>
+              <tspan class="state-desc" x="780" y="214">出口侧</tspan>
+            </text>
+
+            <path class="edge" d="M234,205 L304,205" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="250" y="187">C1 / 0</text>
+
+            <path class="edge" d="M456,205 L524,205" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="472" y="187">C2 / 0</text>
+
+            <path class="edge" d="M676,205 L704,205" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="686" y="187">C3 / 0</text>
+
+            <path class="edge" d="M717,235 C600,355 330,360 194,253" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="440" y="352">C0 / PASS_DONE=1</text>
+
+            <path class="edge" d="M328,166 C284,122 222,124 184,158" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="224" y="120">C0 / 0</text>
+
+            <path class="edge" d="M552,165 C466,78 274,84 184,156" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="352" y="84">C0 / 0</text>
+
+            <path class="self-edge" d="M119,161 C80,108 166,72 190,151" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="88" y="95">其他 / 0</text>
+
+            <path class="self-edge" d="M380,153 C414,94 470,125 443,178" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="424" y="112">其他 / 0</text>
+
+            <path class="self-edge" d="M600,153 C634,94 690,125 663,178" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="644" y="112">其他 / 0</text>
+
+            <path class="self-edge" d="M828,164 C878,112 910,214 852,222" marker-end="url(#arrow-passage)"></path>
+            <text class="edge-label" x="844" y="114">其他 / 0</text>
+          </svg>
+        </figure>
+
+        <h4>通行子有限状态机输出</h4>
+        <ul>
+          <li>在 <code>P1</code>、<code>P2</code> 和 <code>P3</code> 中，<code>PASS_ACTIVE=1</code>。</li>
+          <li>当 <code>C0=0</code> 时，<code>AREA_OCCUPIED=1</code>；也就是说，只要任一红外传感器被遮挡，检测区域就被占用。</li>
+          <li>只有在有效转移 <code>P3 -&gt; P0</code> 上，<code>PASS_DONE=1</code>。</li>
+        </ul>
+
+        <p>
+          这保证了只有乘客从 <code>IR1</code> 侧进入，并最终从 <code>IR3</code> 侧离开时，系统才会识别为成功通行。
+        </p>
+
+        <h2><span class="section-number">4.</span>(c) 主有限状态机的 ASM 图</h2>
+        <pre class="diagram">A 待机
+  输出：GATE_OPEN=0, TIMER_ON=0, ALARM=0
+  如果 PAYTERM=1 -> B
+  否则 -> A
+
+B 等待进入
+  输出：GATE_OPEN=1, TIMER_ON=1, ALARM=0
+  如果 PASS_ACTIVE=1 -> C
+  否则如果 TIME_OUT=1 -> A
+  否则 -> B
+
+C 通行中
+  输出：GATE_OPEN=1, TIMER_ON=1, ALARM=0
+  如果 PASS_DONE=1 -> A
+  否则如果 TIME_OUT=0 -> C
+  否则如果 AREA_OCCUPIED=1 -> D
+  否则 -> A
+
+D 报警状态
+  输出：GATE_OPEN=1, TIMER_ON=0, ALARM=1
+  如果 AREA_OCCUPIED=0 -> A
+  否则 -> D</pre>
+
+        <h2><span class="section-number">5.</span>(d) 状态分配与逻辑方程</h2>
+
+        <h3>5.1 主有限状态机状态分配</h3>
+        <p>使用两个 D 触发器 <code>Q1 Q0</code>：</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>状态</th>
+              <th>含义</th>
+              <th>编码</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>A</code></td>
+              <td>待机</td>
+              <td><code>00</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td>等待进入</td>
+              <td><code>01</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td>通行中</td>
+              <td><code>11</code></td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td>报警状态</td>
+              <td><code>10</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>这种格雷码风格的分配很方便，因为正常状态序列为：</p>
+        <pre>00 -&gt; 01 -&gt; 11 -&gt; 10 -&gt; 00</pre>
+
+        <h4>主有限状态机状态转移表</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>当前状态</th>
+              <th>条件</th>
+              <th>下一状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>A</code></td>
+              <td><code>PAYTERM=0</code></td>
+              <td><code>A</code></td>
+            </tr>
+            <tr>
+              <td><code>A</code></td>
+              <td><code>PAYTERM=1</code></td>
+              <td><code>B</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td><code>PASS_ACTIVE=1</code></td>
+              <td><code>C</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td><code>PASS_ACTIVE=0, TIME_OUT=1</code></td>
+              <td><code>A</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td>其他情况</td>
+              <td><code>B</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>PASS_DONE=1</code></td>
+              <td><code>A</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>PASS_DONE=0, TIME_OUT=1, AREA_OCCUPIED=1</code></td>
+              <td><code>D</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>PASS_DONE=0, TIME_OUT=1, AREA_OCCUPIED=0</code></td>
+              <td><code>A</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td>其他情况</td>
+              <td><code>C</code></td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td><code>AREA_OCCUPIED=0</code></td>
+              <td><code>A</code></td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td><code>AREA_OCCUPIED=1</code></td>
+              <td><code>D</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>令：</p>
+        <ul>
+          <li><code>P = PAYTERM</code></li>
+          <li><code>T = TIME_OUT</code></li>
+          <li><code>PA = PASS_ACTIVE</code></li>
+          <li><code>PD = PASS_DONE</code></li>
+          <li><code>O = AREA_OCCUPIED</code></li>
+        </ul>
+
+        <h4>主有限状态机完整输入/输出表</h4>
+        <p><code>X</code> 表示该输入在这一行中不影响下一状态；输出是 Moore 型输出，只由当前状态决定。</p>
+        <div class="table-scroll">
+        <table class="wide-table">
+          <thead>
+            <tr>
+              <th>当前状态</th>
+              <th><code>P</code></th>
+              <th><code>T</code></th>
+              <th><code>PA</code></th>
+              <th><code>PD</code></th>
+              <th><code>O</code></th>
+              <th>下一状态</th>
+              <th><code>GATE_OPEN</code></th>
+              <th><code>TIMER_ON</code></th>
+              <th><code>ALARM</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>A</code></td>
+              <td><code>0</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>A</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>A</code></td>
+              <td><code>1</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>B</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>C</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>A</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>B</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>B</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>X</code></td>
+              <td><code>A</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>X</code></td>
+              <td><code>C</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>1</code></td>
+              <td><code>D</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>C</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>0</code></td>
+              <td><code>A</code></td>
+              <td><code>1</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>0</code></td>
+              <td><code>A</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+              <td><code>1</code></td>
+            </tr>
+            <tr>
+              <td><code>D</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>X</code></td>
+              <td><code>1</code></td>
+              <td><code>D</code></td>
+              <td><code>1</code></td>
+              <td><code>0</code></td>
+              <td><code>1</code></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <p>使用 D 触发器时：</p>
+        <pre>D_Q1 = (~Q1.Q0.PA) + (Q1.Q0.~PD.(~T + O)) + (Q1.~Q0.O)
+
+D_Q0 = (~Q1.~Q0.P) + (~Q1.Q0.(PA + ~T)) + (Q1.Q0.~PD.~T)</pre>
+
+        <p>主有限状态机输出：</p>
+        <pre>GATE_OPEN = Q1 + Q0
+TIMER_ON  = Q0
+ALARM     = Q1.~Q0</pre>
+
+        <h3>5.2 通行子有限状态机状态分配</h3>
+        <p>使用两个 D 触发器 <code>P1 P0</code>：</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>状态</th>
+              <th>含义</th>
+              <th>编码</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>P0</code></td>
+              <td>检测区域为空</td>
+              <td><code>00</code></td>
+            </tr>
+            <tr>
+              <td><code>P1</code></td>
+              <td>入口侧</td>
+              <td><code>01</code></td>
+            </tr>
+            <tr>
+              <td><code>P2</code></td>
+              <td>中间区域</td>
+              <td><code>11</code></td>
+            </tr>
+            <tr>
+              <td><code>P3</code></td>
+              <td>出口侧</td>
+              <td><code>10</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>通行子有限状态机状态转移表</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>当前状态</th>
+              <th>条件</th>
+              <th>下一状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>P0</code></td>
+              <td><code>C1=1</code></td>
+              <td><code>P1</code></td>
+            </tr>
+            <tr>
+              <td><code>P0</code></td>
+              <td>其他情况</td>
+              <td><code>P0</code></td>
+            </tr>
+            <tr>
+              <td><code>P1</code></td>
+              <td><code>C2=1</code></td>
+              <td><code>P2</code></td>
+            </tr>
+            <tr>
+              <td><code>P1</code></td>
+              <td><code>C0=1</code></td>
+              <td><code>P0</code></td>
+            </tr>
+            <tr>
+              <td><code>P1</code></td>
+              <td>其他情况</td>
+              <td><code>P1</code></td>
+            </tr>
+            <tr>
+              <td><code>P2</code></td>
+              <td><code>C3=1</code></td>
+              <td><code>P3</code></td>
+            </tr>
+            <tr>
+              <td><code>P2</code></td>
+              <td><code>C0=1</code></td>
+              <td><code>P0</code></td>
+            </tr>
+            <tr>
+              <td><code>P2</code></td>
+              <td>其他情况</td>
+              <td><code>P2</code></td>
+            </tr>
+            <tr>
+              <td><code>P3</code></td>
+              <td><code>C0=1</code></td>
+              <td><code>P0</code></td>
+            </tr>
+            <tr>
+              <td><code>P3</code></td>
+              <td>其他情况</td>
+              <td><code>P3</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>使用 D 触发器时：</p>
+        <pre>D_P1 = (~P1.P0.C2) + (P1.~C0)
+
+D_P0 = (~P1.~P0.C1) + (~P1.P0.~C0) + (P1.P0.~C3.~C0)</pre>
+
+        <p>通行子有限状态机输出：</p>
+        <pre>PASS_ACTIVE = P1 + P0
+PASS_DONE   = P1.~P0.C0
+AREA_OCCUPIED  = ~C0 = IR1 + IR2 + IR3</pre>
+
+        <p>
+          这些方程是所选状态转移表在有效物理传感器模式下的直接实现。
+        </p>
+
+        <h2><span class="section-number">6.</span>(e) 各有限状态机的电路原理图</h2>
+
+        <h3>6.1 顶层原理图</h3>
+        <pre class="diagram">PAYTERM ------------------------------> 主有限状态机
+TIME_OUT -----------------------------> 主有限状态机
+
+IR1 ----\
+IR2 -----&gt; 传感器分类器 --------> 通行子有限状态机 ---- PASS_ACTIVE ---\
+IR3 ----/                                            ---- PASS_DONE -----&gt; 主有限状态机
+                                                       ---- AREA_OCCUPIED ----/
+
+主有限状态机 ---- TIMER_ON ----> 1 分钟定时器 ---- TIME_OUT ----> 主有限状态机
+主有限状态机 ---- GATE_OPEN ---> 闸门
+主有限状态机 ---- ALARM -------> 报警</pre>
+
+        <h3>6.2 通行分类器原理图</h3>
+        <p>三个原始传感器信号首先被转换为四类逻辑条件：</p>
+        <pre>C0 = ~IR1 . ~IR2 . ~IR3
+C1 =  IR1 . ~IR3
+C2 =  IR2
+C3 = ~IR1 .  IR3</pre>
+
+        <p>因此，通行子有限状态机可以表示为：</p>
+        <pre class="diagram">IR1, IR2, IR3
+      |
+      v
+传感器分类器 --> C0, C1, C2, C3 --> 下一状态逻辑 --> 触发器 P1, P0 的 D 输入
+                                                            |
+                                                            v
+                                                 PASS_ACTIVE, PASS_DONE</pre>
+
+        <h3>6.3 主有限状态机原理图</h3>
+        <pre class="diagram">PAYTERM, TIME_OUT, PASS_ACTIVE, PASS_DONE, AREA_OCCUPIED
+                             |
+                             v
+                 下一状态逻辑 --> 触发器 Q1, Q0 的 D 输入
+                             |
+                             v
+                 GATE_OPEN, TIMER_ON, ALARM</pre>
+
+        <p>如果需要门级电路原理图，可使用：</p>
+        <ul>
+          <li>主有限状态机使用两个 D 触发器：<code>Q1</code>、<code>Q0</code></li>
+          <li>通行子有限状态机使用两个 D 触发器：<code>P1</code>、<code>P0</code></li>
+          <li>使用与门、或门和非门实现第 5 节中的方程</li>
+          <li>一个通过 <code>TIMER_ON</code> 和 <code>TIME_OUT</code> 连接的定时器模块</li>
+        </ul>
+
+        <h2><span class="section-number">7.</span>简要结论</h2>
+        <div class="summary">
+          <p><strong>本解答满足全部要求：</strong></p>
+          <ul>
+            <li>无乘客时系统处于待机状态</li>
+            <li>支付成功后闸门立即打开</li>
+            <li>能够检测从 <code>IR1 -&gt; IR2 -&gt; IR3</code> 的有效正向移动</li>
+            <li>支持儿童、成人和携带行李乘客的情况</li>
+            <li>无人进入时超时则关闭闸门</li>
+            <li>乘客仍在内部时超时则触发报警</li>
+            <li>只有在传感器检测区域变为空，即 <code>AREA_OCCUPIED=0</code> 后才清除报警</li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <section lang="en">
+          <div class="summary">
+            <p><strong>English version follows.</strong></p>
+          </div>
+
+          <h2><span class="section-number">1.</span>Design approach</h2>
+          <p>
+            This solution uses a <strong>hierarchical FSM</strong>, matching the hint in the assignment.
+            The complete system is split into three parts:
+          </p>
+          <ul>
+            <li><strong>Main FSM</strong>: handles standby, gate control, timeout, and alarm.</li>
+            <li><strong>Passage-detection sub-FSM</strong>: checks whether the passenger moves through the three IR sensors in the correct order.</li>
+            <li><strong>1-minute timer</strong>: treated as an external block controlled by <code>TIMER_ON</code>.</li>
+          </ul>
+          <p>
+            This is cleaner than forcing all behavior into one large homogeneous FSM.
+          </p>
+
+          <h2><span class="section-number">2.</span>(a) Inputs and outputs of the FSM</h2>
+
+          <h3>2.1 External system signals</h3>
+          <p><strong>Inputs</strong></p>
+          <ul>
+            <li><code>PAYTERM</code>: <code>1</code> means payment successful, <code>0</code> means standby.</li>
+            <li><code>IR1</code>, <code>IR2</code>, <code>IR3</code>: infrared sensor outputs.</li>
+            <li><code>TIME_OUT</code>: output from the 1-minute timer.</li>
+            <li><code>CLK</code>: clock input for synchronous FSM implementation.</li>
+            <li><code>RESET</code>: reset input.</li>
+          </ul>
+
+          <p><strong>Outputs</strong></p>
+          <ul>
+            <li><code>GATE_OPEN</code>: <code>1</code> opens the gate, <code>0</code> closes the gate.</li>
+            <li><code>TIMER_ON</code>: <code>1</code> enables the timer, <code>0</code> resets the timer.</li>
+            <li><code>ALARM</code>: <code>1</code> raises the alarm, <code>0</code> clears the alarm.</li>
+          </ul>
+
+          <h3>2.2 Internal signals used in the hierarchical design</h3>
+          <p>The passage-detection sub-FSM generates these internal signals for the main FSM:</p>
+          <ul>
+            <li><code>PASS_ACTIVE</code>: passenger is in the sensing zone or currently passing.</li>
+            <li><code>PASS_DONE</code>: one valid pass has been completed.</li>
+            <li><code>AREA_OCCUPIED</code>: at least one sensor is shaded, meaning the sensing area is occupied.</li>
+          </ul>
+
+          <p><strong>Main FSM inputs</strong></p>
+          <ul>
+            <li><code>PAYTERM</code>, <code>TIME_OUT</code>, <code>PASS_ACTIVE</code>, <code>PASS_DONE</code>, <code>AREA_OCCUPIED</code>, <code>CLK</code>, <code>RESET</code></li>
+          </ul>
+
+          <p><strong>Main FSM outputs</strong></p>
+          <ul>
+            <li><code>GATE_OPEN</code>, <code>TIMER_ON</code>, <code>ALARM</code></li>
+          </ul>
+
+          <p><strong>Passage sub-FSM inputs</strong></p>
+          <ul>
+            <li><code>IR1</code>, <code>IR2</code>, <code>IR3</code>, <code>CLK</code>, <code>RESET</code></li>
+          </ul>
+
+          <p><strong>Passage sub-FSM outputs</strong></p>
+          <ul>
+            <li><code>PASS_ACTIVE</code>, <code>PASS_DONE</code>, <code>AREA_OCCUPIED</code></li>
+          </ul>
+
+          <h2><span class="section-number">3.</span>(b) State diagram and state description</h2>
+
+          <h3>3.1 Main FSM</h3>
+          <h4>State definitions</h4>
+          <ul>
+            <li><code>A IDLE</code>: standby, no paid passenger accepted, gate closed, timer reset, no alarm.</li>
+            <li><code>B WAIT_ENTRY</code>: payment accepted, gate open, timer running, waiting for a passenger to enter.</li>
+            <li><code>C PASSING</code>: passenger has entered and is moving through the gate, timer still running.</li>
+            <li><code>D ALARM_STATE</code>: 1 minute expired while passenger is still inside the sensing area, alarm asserted until the area becomes empty.</li>
+          </ul>
+
+          <h4>Main FSM state diagram (Moore type)</h4>
+          <figure class="state-machine" aria-label="Main FSM Moore state diagram">
+            <figcaption>Moore notation: outputs are written inside states, and transition labels contain conditions only.</figcaption>
+            <svg class="state-svg" viewBox="0 0 900 520" role="img" aria-labelledby="main-fsm-title-en">
+              <title id="main-fsm-title-en">Main FSM Moore State Diagram</title>
+              <defs>
+                <marker id="arrow-main-en" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0,0 L0,6 L9,3 z" fill="#374151"></path>
+                </marker>
+              </defs>
+
+              <path class="edge" d="M45,190 L80,190" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="36" y="175">Start</text>
+
+              <ellipse class="state" cx="160" cy="190" rx="82" ry="58"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="160" y="168">A IDLE</tspan>
+                <tspan class="output" x="160" y="191">GATE_OPEN=0</tspan>
+                <tspan class="output" x="160" y="209">TIMER_ON=0, ALARM=0</tspan>
+              </text>
+
+              <ellipse class="state" cx="405" cy="190" rx="92" ry="58"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="405" y="168">B WAIT_ENTRY</tspan>
+                <tspan class="output" x="405" y="191">GATE_OPEN=1</tspan>
+                <tspan class="output" x="405" y="209">TIMER_ON=1, ALARM=0</tspan>
+              </text>
+
+              <ellipse class="state" cx="650" cy="190" rx="88" ry="58"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="650" y="168">C PASSING</tspan>
+                <tspan class="output" x="650" y="191">GATE_OPEN=1</tspan>
+                <tspan class="output" x="650" y="209">TIMER_ON=1, ALARM=0</tspan>
+              </text>
+
+              <ellipse class="state state-alarm" cx="650" cy="395" rx="92" ry="58"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="650" y="373">D ALARM_STATE</tspan>
+                <tspan class="output" x="650" y="396">GATE_OPEN=1</tspan>
+                <tspan class="output" x="650" y="414">TIMER_ON=0, ALARM=1</tspan>
+              </text>
+
+              <path class="edge" d="M242,190 L312,190" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="260" y="172">PAYTERM=1</text>
+
+              <path class="edge" d="M497,190 L562,190" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="508" y="172">PASS_ACTIVE=1</text>
+
+              <path class="edge" d="M650,248 L650,337" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="667" y="285">TIME_OUT=1</text>
+              <text class="edge-label" x="667" y="303">AREA_OCCUPIED=1</text>
+
+              <path class="edge" d="M584,228 C470,330 310,330 205,236" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="342" y="316">PASS_DONE=1 or</text>
+              <text class="edge-label" x="324" y="334">TIME_OUT=1 and AREA_OCCUPIED=0</text>
+
+              <path class="edge" d="M357,138 C300,76 208,82 175,132" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="215" y="88">TIME_OUT=1 and PASS_ACTIVE=0</text>
+
+              <path class="edge" d="M572,417 C410,492 190,432 157,249" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="315" y="466">AREA_OCCUPIED=0</text>
+
+              <path class="self-edge" d="M117,139 C70,78 166,42 195,126" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="83" y="70">PAYTERM=0</text>
+
+              <path class="self-edge" d="M405,132 C432,70 500,88 486,151" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="442" y="86">otherwise</text>
+
+              <path class="self-edge" d="M696,141 C770,72 828,152 738,180" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="762" y="110">otherwise</text>
+
+              <path class="self-edge" d="M724,361 C812,330 820,450 730,430" marker-end="url(#arrow-main-en)"></path>
+              <text class="edge-label" x="766" y="392">AREA_OCCUPIED=1</text>
+            </svg>
+          </figure>
+
+          <h4>Main FSM outputs in each state</h4>
+          <ul>
+            <li><code>A</code>: <code>GATE_OPEN=0</code>, <code>TIMER_ON=0</code>, <code>ALARM=0</code></li>
+            <li><code>B</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=1</code>, <code>ALARM=0</code></li>
+            <li><code>C</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=1</code>, <code>ALARM=0</code></li>
+            <li><code>D</code>: <code>GATE_OPEN=1</code>, <code>TIMER_ON=0</code>, <code>ALARM=1</code></li>
+          </ul>
+
+          <div class="note">
+            In <code>B</code>, if the timer expires and nobody has entered, the system simply closes the gate.
+            In <code>D</code>, the gate remains open so the passenger can leave; the alarm clears only after the sensing area becomes empty, meaning <code>AREA_OCCUPIED=0</code>.
+          </div>
+
+          <h3>3.2 Passage-detection sub-FSM</h3>
+          <p>
+            To satisfy requirements (4) to (6), the sensing sequence must move from <code>IR1</code> to <code>IR3</code>.
+          </p>
+
+          <h4>Useful sensor classes</h4>
+          <p>Define four combinational conditions from <code>IR1 IR2 IR3</code>:</p>
+          <ul>
+            <li><code>C0 = ~IR1 . ~IR2 . ~IR3</code>: no sensor shaded, pattern <code>000</code></li>
+            <li><code>C1 = IR1 . ~IR3</code>: passenger is at the entry side, valid patterns <code>100</code> or <code>110</code></li>
+            <li><code>C2 = IR2</code>: passenger occupies the middle zone, valid patterns <code>010</code>, <code>110</code>, <code>111</code>, <code>011</code></li>
+            <li><code>C3 = ~IR1 . IR3</code>: passenger is at the exit side, valid patterns <code>001</code> or <code>011</code></li>
+          </ul>
+
+          <p>This supports the expected movement for different passengers:</p>
+          <ul>
+            <li>child: <code>100 -&gt; 010 -&gt; 001 -&gt; 000</code></li>
+            <li>adult: <code>110 -&gt; 111/010 -&gt; 011 -&gt; 000</code></li>
+            <li>passenger with luggage: <code>100 -&gt; 110 -&gt; 111 -&gt; 011 -&gt; 001 -&gt; 000</code></li>
+          </ul>
+
+          <p>
+            Invalid non-neighbor patterns such as <code>101</code> are not treated as a successful pass.
+          </p>
+
+          <h4>Passage sub-FSM states</h4>
+          <ul>
+            <li><code>P0 CLEAR</code>: sensing area empty.</li>
+            <li><code>P1 ENTRY_SIDE</code>: entry side occupied first, so the passenger starts from the correct direction.</li>
+            <li><code>P2 MIDDLE_ZONE</code>: the passenger is inside the passage.</li>
+            <li><code>P3 EXIT_SIDE</code>: the passenger is leaving from the exit side.</li>
+          </ul>
+
+          <h4>Passage sub-FSM state diagram (Mealy type)</h4>
+          <figure class="state-machine" aria-label="Passage-detection sub-FSM Mealy state diagram">
+            <figcaption>Mealy notation: each edge is labeled as “input condition / output”. The key transition output is <code>PASS_DONE</code>.</figcaption>
+            <svg class="state-svg" viewBox="0 0 900 440" role="img" aria-labelledby="passage-fsm-title-en">
+              <title id="passage-fsm-title-en">Passage-Detection Sub-FSM Mealy State Diagram</title>
+              <defs>
+                <marker id="arrow-passage-en" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                  <path d="M0,0 L0,6 L9,3 z" fill="#374151"></path>
+                </marker>
+              </defs>
+
+              <path class="edge" d="M44,205 L86,205" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="35" y="188">Start</text>
+
+              <ellipse class="state" cx="160" cy="205" rx="74" ry="52"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="160" y="192">P0</tspan>
+                <tspan class="state-desc" x="160" y="214">CLEAR</tspan>
+              </text>
+
+              <ellipse class="state" cx="380" cy="205" rx="76" ry="52"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="380" y="192">P1</tspan>
+                <tspan class="state-desc" x="380" y="214">ENTRY_SIDE</tspan>
+              </text>
+
+              <ellipse class="state" cx="600" cy="205" rx="76" ry="52"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="600" y="192">P2</tspan>
+                <tspan class="state-desc" x="600" y="214">MIDDLE_ZONE</tspan>
+              </text>
+
+              <ellipse class="state" cx="780" cy="205" rx="76" ry="52"></ellipse>
+              <text text-anchor="middle">
+                <tspan class="state-name" x="780" y="192">P3</tspan>
+                <tspan class="state-desc" x="780" y="214">EXIT_SIDE</tspan>
+              </text>
+
+              <path class="edge" d="M234,205 L304,205" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="250" y="187">C1 / 0</text>
+
+              <path class="edge" d="M456,205 L524,205" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="472" y="187">C2 / 0</text>
+
+              <path class="edge" d="M676,205 L704,205" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="686" y="187">C3 / 0</text>
+
+              <path class="edge" d="M717,235 C600,355 330,360 194,253" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="440" y="352">C0 / PASS_DONE=1</text>
+
+              <path class="edge" d="M328,166 C284,122 222,124 184,158" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="224" y="120">C0 / 0</text>
+
+              <path class="edge" d="M552,165 C466,78 274,84 184,156" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="352" y="84">C0 / 0</text>
+
+              <path class="self-edge" d="M119,161 C80,108 166,72 190,151" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="88" y="95">otherwise / 0</text>
+
+              <path class="self-edge" d="M380,153 C414,94 470,125 443,178" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="424" y="112">otherwise / 0</text>
+
+              <path class="self-edge" d="M600,153 C634,94 690,125 663,178" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="644" y="112">otherwise / 0</text>
+
+              <path class="self-edge" d="M828,164 C878,112 910,214 852,222" marker-end="url(#arrow-passage-en)"></path>
+              <text class="edge-label" x="844" y="114">otherwise / 0</text>
+            </svg>
+          </figure>
+
+          <h4>Passage sub-FSM outputs</h4>
+          <ul>
+            <li><code>PASS_ACTIVE=1</code> in <code>P1</code>, <code>P2</code>, and <code>P3</code>.</li>
+            <li><code>AREA_OCCUPIED=1</code> when <code>C0=0</code>, meaning at least one IR sensor is shaded.</li>
+            <li><code>PASS_DONE=1</code> only on the valid transition <code>P3 -&gt; P0</code>.</li>
+          </ul>
+
+          <p>
+            This guarantees that a successful pass is only recognized when the passenger enters from the <code>IR1</code> side and finally clears the <code>IR3</code> side.
+          </p>
+
+          <h2><span class="section-number">4.</span>(c) ASM chart of the main FSM</h2>
+          <pre class="diagram">A IDLE
+  Outputs: GATE_OPEN=0, TIMER_ON=0, ALARM=0
+  If PAYTERM=1 -> B
+  Else -> A
+
+B WAIT_ENTRY
+  Outputs: GATE_OPEN=1, TIMER_ON=1, ALARM=0
+  If PASS_ACTIVE=1 -> C
+  Else if TIME_OUT=1 -> A
+  Else -> B
+
+C PASSING
+  Outputs: GATE_OPEN=1, TIMER_ON=1, ALARM=0
+  If PASS_DONE=1 -> A
+  Else if TIME_OUT=0 -> C
+  Else if AREA_OCCUPIED=1 -> D
+  Else -> A
+
+D ALARM_STATE
+  Outputs: GATE_OPEN=1, TIMER_ON=0, ALARM=1
+  If AREA_OCCUPIED=0 -> A
+  Else -> D</pre>
+
+          <h2><span class="section-number">5.</span>(d) State assignment and logic equations</h2>
+
+          <h3>5.1 Main FSM state assignment</h3>
+          <p>Use two flip-flops <code>Q1 Q0</code>:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Meaning</th>
+                <th>Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>A</code></td>
+                <td>IDLE</td>
+                <td><code>00</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td>WAIT_ENTRY</td>
+                <td><code>01</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td>PASSING</td>
+                <td><code>11</code></td>
+              </tr>
+              <tr>
+                <td><code>D</code></td>
+                <td>ALARM_STATE</td>
+                <td><code>10</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>This Gray-style assignment is convenient because the normal sequence is:</p>
+          <pre>00 -&gt; 01 -&gt; 11 -&gt; 10 -&gt; 00</pre>
+
+          <h4>Main FSM transition table</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Present state</th>
+                <th>Condition</th>
+                <th>Next state</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>A</code></td>
+                <td><code>PAYTERM=0</code></td>
+                <td><code>A</code></td>
+              </tr>
+              <tr>
+                <td><code>A</code></td>
+                <td><code>PAYTERM=1</code></td>
+                <td><code>B</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td><code>PASS_ACTIVE=1</code></td>
+                <td><code>C</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td><code>PASS_ACTIVE=0, TIME_OUT=1</code></td>
+                <td><code>A</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td>otherwise</td>
+                <td><code>B</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>PASS_DONE=1</code></td>
+                <td><code>A</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>PASS_DONE=0, TIME_OUT=1, AREA_OCCUPIED=1</code></td>
+                <td><code>D</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>PASS_DONE=0, TIME_OUT=1, AREA_OCCUPIED=0</code></td>
+                <td><code>A</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td>otherwise</td>
+                <td><code>C</code></td>
+              </tr>
+              <tr>
+                <td><code>D</code></td>
+                <td><code>AREA_OCCUPIED=0</code></td>
+                <td><code>A</code></td>
+              </tr>
+              <tr>
+                <td><code>D</code></td>
+                <td><code>AREA_OCCUPIED=1</code></td>
+                <td><code>D</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>Let:</p>
+          <ul>
+            <li><code>P = PAYTERM</code></li>
+            <li><code>T = TIME_OUT</code></li>
+            <li><code>PA = PASS_ACTIVE</code></li>
+            <li><code>PD = PASS_DONE</code></li>
+            <li><code>O = AREA_OCCUPIED</code></li>
+          </ul>
+
+          <h4>Complete input/output table for the main FSM</h4>
+          <p><code>X</code> means that the input does not affect the next state in that row. The outputs are Moore outputs, so they depend only on the present state.</p>
+          <div class="table-scroll">
+          <table class="wide-table">
+            <thead>
+              <tr>
+                <th>Present state</th>
+                <th><code>P</code></th>
+                <th><code>T</code></th>
+                <th><code>PA</code></th>
+                <th><code>PD</code></th>
+                <th><code>O</code></th>
+                <th>Next state</th>
+                <th><code>GATE_OPEN</code></th>
+                <th><code>TIMER_ON</code></th>
+                <th><code>ALARM</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>A</code></td>
+                <td><code>0</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>A</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>A</code></td>
+                <td><code>1</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>B</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>C</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>A</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>B</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>B</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>X</code></td>
+                <td><code>A</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>X</code></td>
+                <td><code>C</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>1</code></td>
+                <td><code>D</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>C</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>0</code></td>
+                <td><code>A</code></td>
+                <td><code>1</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+              </tr>
+              <tr>
+                <td><code>D</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>0</code></td>
+                <td><code>A</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+                <td><code>1</code></td>
+              </tr>
+              <tr>
+                <td><code>D</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>X</code></td>
+                <td><code>1</code></td>
+                <td><code>D</code></td>
+                <td><code>1</code></td>
+                <td><code>0</code></td>
+                <td><code>1</code></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+          <p>Then with D flip-flops:</p>
+          <pre>D_Q1 = (~Q1.Q0.PA) + (Q1.Q0.~PD.(~T + O)) + (Q1.~Q0.O)
+
+D_Q0 = (~Q1.~Q0.P) + (~Q1.Q0.(PA + ~T)) + (Q1.Q0.~PD.~T)</pre>
+
+          <p>Main FSM outputs:</p>
+          <pre>GATE_OPEN = Q1 + Q0
+TIMER_ON  = Q0
+ALARM     = Q1.~Q0</pre>
+
+          <h3>5.2 Passage sub-FSM state assignment</h3>
+          <p>Use two flip-flops <code>P1 P0</code>:</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>State</th>
+                <th>Meaning</th>
+                <th>Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>P0</code></td>
+                <td>CLEAR</td>
+                <td><code>00</code></td>
+              </tr>
+              <tr>
+                <td><code>P1</code></td>
+                <td>ENTRY_SIDE</td>
+                <td><code>01</code></td>
+              </tr>
+              <tr>
+                <td><code>P2</code></td>
+                <td>MIDDLE_ZONE</td>
+                <td><code>11</code></td>
+              </tr>
+              <tr>
+                <td><code>P3</code></td>
+                <td>EXIT_SIDE</td>
+                <td><code>10</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Passage sub-FSM transition table</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Present state</th>
+                <th>Condition</th>
+                <th>Next state</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>P0</code></td>
+                <td><code>C1=1</code></td>
+                <td><code>P1</code></td>
+              </tr>
+              <tr>
+                <td><code>P0</code></td>
+                <td>otherwise</td>
+                <td><code>P0</code></td>
+              </tr>
+              <tr>
+                <td><code>P1</code></td>
+                <td><code>C2=1</code></td>
+                <td><code>P2</code></td>
+              </tr>
+              <tr>
+                <td><code>P1</code></td>
+                <td><code>C0=1</code></td>
+                <td><code>P0</code></td>
+              </tr>
+              <tr>
+                <td><code>P1</code></td>
+                <td>otherwise</td>
+                <td><code>P1</code></td>
+              </tr>
+              <tr>
+                <td><code>P2</code></td>
+                <td><code>C3=1</code></td>
+                <td><code>P3</code></td>
+              </tr>
+              <tr>
+                <td><code>P2</code></td>
+                <td><code>C0=1</code></td>
+                <td><code>P0</code></td>
+              </tr>
+              <tr>
+                <td><code>P2</code></td>
+                <td>otherwise</td>
+                <td><code>P2</code></td>
+              </tr>
+              <tr>
+                <td><code>P3</code></td>
+                <td><code>C0=1</code></td>
+                <td><code>P0</code></td>
+              </tr>
+              <tr>
+                <td><code>P3</code></td>
+                <td>otherwise</td>
+                <td><code>P3</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>With D flip-flops:</p>
+          <pre>D_P1 = (~P1.P0.C2) + (P1.~C0)
+
+D_P0 = (~P1.~P0.C1) + (~P1.P0.~C0) + (P1.P0.~C3.~C0)</pre>
+
+          <p>Passage sub-FSM outputs:</p>
+          <pre>PASS_ACTIVE = P1 + P0
+PASS_DONE   = P1.~P0.C0
+AREA_OCCUPIED  = ~C0 = IR1 + IR2 + IR3</pre>
+
+          <p>
+            These equations are the direct implementation of the chosen transition table for valid physical sensor patterns.
+          </p>
+
+          <h2><span class="section-number">6.</span>(e) Schematics of the FSMs</h2>
+
+          <h3>6.1 Top-level schematic</h3>
+          <pre class="diagram">PAYTERM ------------------------------> Main FSM
+TIME_OUT -----------------------------> Main FSM
+
+IR1 ----\
+IR2 -----&gt; Sensor Classifier --------> Passage Sub-FSM ---- PASS_ACTIVE ---\
+IR3 ----/                                              ---- PASS_DONE -----&gt; Main FSM
+                                                       ---- AREA_OCCUPIED ----/
+
+Main FSM ---- TIMER_ON ----> 1-minute Timer ---- TIME_OUT ----> Main FSM
+Main FSM ---- GATE_OPEN ---> Gate
+Main FSM ---- ALARM -------> Alarm</pre>
+
+          <h3>6.2 Passage classifier schematic</h3>
+          <p>The three raw sensors are first converted into four logic classes:</p>
+          <pre>C0 = ~IR1 . ~IR2 . ~IR3
+C1 =  IR1 . ~IR3
+C2 =  IR2
+C3 = ~IR1 .  IR3</pre>
+
+          <p>So the passage sub-FSM can be viewed as:</p>
+          <pre class="diagram">IR1, IR2, IR3
+      |
+      v
+Sensor classifier --> C0, C1, C2, C3 --> next-state logic --> D inputs of flip-flops P1, P0
+                                                               |
+                                                               v
+                                                    PASS_ACTIVE, PASS_DONE</pre>
+
+          <h3>6.3 Main FSM schematic</h3>
+          <pre class="diagram">PAYTERM, TIME_OUT, PASS_ACTIVE, PASS_DONE, AREA_OCCUPIED
+                             |
+                             v
+                 next-state logic --> D inputs of flip-flops Q1, Q0
+                             |
+                             v
+                 GATE_OPEN, TIMER_ON, ALARM</pre>
+
+          <p>If a gate-level schematic is required, use:</p>
+          <ul>
+            <li>two D flip-flops for the main FSM: <code>Q1</code>, <code>Q0</code></li>
+            <li>two D flip-flops for the passage sub-FSM: <code>P1</code>, <code>P0</code></li>
+            <li>AND, OR, and NOT gates implementing the equations in Section 5</li>
+            <li>one timer block connected through <code>TIMER_ON</code> and <code>TIME_OUT</code></li>
+          </ul>
+
+          <h2><span class="section-number">7.</span>Concise conclusion</h2>
+          <div class="summary">
+            <p><strong>This solution satisfies all requirements:</strong></p>
+            <ul>
+              <li>standby when no passenger is present</li>
+              <li>gate opens immediately after successful payment</li>
+              <li>valid forward movement is detected from <code>IR1 -&gt; IR2 -&gt; IR3</code></li>
+              <li>child, adult, and luggage cases are all supported</li>
+              <li>timeout with no entry closes the gate</li>
+              <li>timeout with passenger still inside raises the alarm</li>
+              <li>alarm is cleared only after the sensing area becomes empty, meaning <code>AREA_OCCUPIED=0</code></li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </article>
+  </div>
+</body>
+</html>
