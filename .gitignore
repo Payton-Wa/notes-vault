@@ -1,4 +1,10 @@
+# Obsidian 内部文件
 .obsidian/
 .trash/
 .DS_Store
 .claudian/
+
+# 不公开的笔记文件夹 — 逐个加在这里
+# 当前不追踪「大三笔记」和「Attachment」
+大三笔记/
+Attachment/
