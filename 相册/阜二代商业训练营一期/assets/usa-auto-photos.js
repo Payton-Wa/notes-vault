@@ -1,0 +1,1 @@
+window.FORCOME_USA_AUTO_PHOTOS = [];
