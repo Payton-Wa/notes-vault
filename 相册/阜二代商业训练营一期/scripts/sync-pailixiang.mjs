@@ -168,10 +168,12 @@ async function discover() {
   }
   const known = new Set([...state.knownIds, ...state.importedIds]);
   const newPhotos = photos.filter(photo => !known.has(photo.id));
-  for (const photo of newPhotos) state.pending[photo.id] = photo;
-  state.knownIds.push(...photos.map(photo => photo.id));
-  state.lastScanAt = new Date().toISOString();
-  await saveState(state);
+  if (newPhotos.length > 0) {
+    for (const photo of newPhotos) state.pending[photo.id] = photo;
+    state.knownIds.push(...newPhotos.map(photo => photo.id));
+    state.lastScanAt = new Date().toISOString();
+    await saveState(state);
+  }
 
   const candidates = Object.values(state.pending)
     .filter(photo => photo.imageUrl && photo.width >= 1200 && photo.height >= 800)
