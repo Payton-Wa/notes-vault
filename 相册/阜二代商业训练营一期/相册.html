@@ -192,6 +192,10 @@
           <button type="button" data-image="assets/usa-09.jpg" data-caption="从一个岗位，看见一套系统" data-caption-en="One role reveals a whole system"><img src="assets/usa-09.jpg" alt="营员在美国企业运营现场交流" loading="lazy"></button>
           <button type="button" data-image="assets/usa-11.jpg" data-caption="一次提问，也是一种新的判断" data-caption-en="A question is also a new judgement"><img src="assets/usa-11.jpg" alt="营员在美国企业课堂认真思考" loading="lazy"></button>
           <button type="button" data-image="assets/usa-12.jpg" data-caption="把视野留在身后，也带回下一段路" data-caption-en="Keep the view, then carry it forward"><img src="assets/usa-12.jpg" alt="美国模块的全体同行者合影" loading="lazy"></button>
+          <button type="button" data-image="assets/usa-13.jpg" data-caption="球场看台上的同行合影" data-caption-en="A shared photo in the stadium seats"><img src="assets/usa-13.jpg" alt="同行者在棒球球场看台前合影" loading="lazy"></button>
+          <button type="button" data-image="assets/usa-14.jpg" data-caption="与同行者一起看球" data-caption-en="Watching the game together"><img src="assets/usa-14.jpg" alt="同行者在棒球球场看台中合影" loading="lazy"></button>
+          <button type="button" data-image="assets/usa-15.jpg" data-caption="湖上行程中的船上合影" data-caption-en="A shared photo on the lake"><img src="assets/usa-15.jpg" alt="同行者在湖上游船中合影" loading="lazy"></button>
+          <button type="button" data-image="assets/usa-16.jpg" data-caption="在 Bass Pro Shops 门前合影" data-caption-en="A group photo outside Bass Pro Shops"><img src="assets/usa-16.jpg" alt="同行者在密苏里州 Bass Pro Shops 门前合影" loading="lazy"></button>
           <button type="button" data-image="assets/factory-focus.jpg" data-caption="在车间里观察与记录"><img src="assets/factory-focus.jpg" alt="营员在车间设备前专注观察" loading="lazy"></button>
           <button type="button" data-image="assets/5.jpg" data-caption="青岛工厂现场学习"><img src="assets/5.jpg" alt="营员在青岛工厂聆听现场讲解" loading="lazy"></button>
           <button type="button" data-image="assets/server-room.jpg" data-caption="理解系统背后的运行"><img src="assets/server-room.jpg" alt="两位营员在机房查看服务器设备" loading="lazy"></button>
@@ -260,7 +264,6 @@
       chapters.usa={images:['assets/usa-06.jpg','assets/usa-07.jpg','assets/usa-08.jpg','assets/usa-12.jpg'],alt:'FORCOME USA module in Springfield, Missouri',upcoming:false,zh:{place:'美国 / 春田',title:'把在中国看见的产品，放到世界的尺度里。',text:'在密苏里州春田，大家走进 FORCOME USA 与 Uriah 的企业课堂、零售货架和仓储现场。从一个产品、一段包装、一次陈列到背后的运营系统，重新理解它怎样抵达真实用户。',tag:'美国现场',note:'从用户看回产品'},en:{place:'USA / Springfield',title:'Put the product seen in China on a world-scale stage.',text:'In Springfield, Missouri, the group entered company sessions at FORCOME USA and Uriah, retail shelves and warehouse operations. From one product, package and display to the system behind it, they revisited how something reaches a real user.',tag:'USA on site',note:'See product through the user'}};
       chapters.sea.images=['assets/sea-07.jpg','assets/sea-08.jpg','assets/sea-09.jpg','assets/sea-01.jpg','assets/sea-02.jpg','assets/sea-05.jpg'];
       var autoUsaPhotos=Array.isArray(window.FORCOME_USA_AUTO_PHOTOS)?window.FORCOME_USA_AUTO_PHOTOS:[];
-      chapters.usa.images=autoUsaPhotos.map(function(photo){return photo.src;}).concat(chapters.usa.images.filter(function(source){return !autoUsaPhotos.some(function(photo){return photo.src===source;});}));
       var archiveNotes = {
         all:{zh:'所有模块的共同记录。从第一次相识，到走进工厂、研发现场与公益活动，最后回到一张张共同完成旅程的合影。',en:'A shared record of every module: first introductions, factory and R&D work, public-welfare activities, and the group photos made at the end of each shared chapter.'},
         shanghai:{zh:'上海第一模块记录相识、分享与表达。公众号内容把它视为一个起点: 先认识身边的人，也认真说出自己真正关心的问题。',en:'The Shanghai module records introductions, sharing and expression. As described in Forcomers, it starts by meeting the people around you and putting genuine questions into words.'},
@@ -310,10 +313,10 @@
       function categoryFor(button) { var source=button.dataset.image || ''; if (source.indexOf('sea-') !== -1) return 'sea'; if (source.indexOf('shanghai') !== -1 || source === 'assets/sharing.jpg') return 'shanghai'; if (source.indexOf('qingdao') !== -1 || source.indexOf('jinhua') !== -1 || source.indexOf('factory') !== -1 || source.indexOf('server-room') !== -1 || source.indexOf('packing-team') !== -1 || source === 'assets/5.jpg') return 'industry'; return 'community'; }
       var galleryRoot=document.querySelector('.gallery'),galleryWindow=document.getElementById('gallery-window'),autoGalleryFragment=document.createDocumentFragment(); autoUsaPhotos.forEach(function(photo){var button=document.createElement('button'),image=document.createElement('img');button.type='button';button.dataset.image=photo.src;button.dataset.caption=photo.captionZh;button.dataset.captionEn=photo.captionEn;image.src=photo.src;image.alt=photo.altZh;image.loading='lazy';button.appendChild(image);autoGalleryFragment.appendChild(button);}); galleryRoot.prepend(autoGalleryFragment);
       var galleryOriginalButtons=Array.prototype.slice.call(galleryRoot.querySelectorAll('[data-image]')); galleryOriginalButtons.forEach(function(button){button.dataset.category=categoryFor(button);}); galleryOriginalButtons.filter(function(button){return (button.dataset.image || '').indexOf('usa-') !== -1;}).forEach(function(button){button.dataset.category='usa';});
-      var gallery=galleryRoot,galleryButtons=[],galleryColumns=[],galleryLoopStops=[],galleryLoopFrame=0,galleryLoopRetry=0,galleryColumnCount=window.matchMedia('(max-width:560px)').matches?1:(window.matchMedia('(max-width:860px)').matches?2:4);
+      var gallery=galleryRoot,galleryButtons=[],galleryColumns=[],galleryLoopStops=[],galleryLoopFrame=0,galleryLoopRetry=0,galleryLayoutTimer=0,galleryColumnCount=window.matchMedia('(max-width:560px)').matches?1:(window.matchMedia('(max-width:860px)').matches?2:4);
       function buildGalleryColumns(){galleryRoot.replaceChildren();galleryRoot.style.gridTemplateColumns='repeat('+galleryColumnCount+',minmax(0,1fr))';galleryColumns=[];for(var columnIndex=0;columnIndex<galleryColumnCount;columnIndex+=1){var column=document.createElement('div'),track=document.createElement('div');column.className='gallery-column';track.className='gallery-column-track';column.appendChild(track);galleryRoot.appendChild(column);galleryColumns.push({column:column,track:track,originals:[]});}galleryOriginalButtons.forEach(function(button,index){var target=galleryColumns[index%galleryColumnCount];target.originals.push(button);target.track.appendChild(button);});galleryColumns.forEach(function(item){item.originals.forEach(function(button){for(var copyIndex=0;copyIndex<3;copyIndex+=1){var copy=button.cloneNode(true);copy.dataset.galleryLoopCopy='true';item.track.appendChild(copy);}});});galleryButtons=Array.prototype.slice.call(galleryRoot.querySelectorAll('[data-image]'));}
       function stopGalleryLoop(){window.cancelAnimationFrame(galleryLoopFrame);window.clearTimeout(galleryLoopRetry);galleryLoopFrame=0;galleryLoopRetry=0;galleryLoopStops.forEach(function(stop){stop();});galleryLoopStops=[];galleryWindow.classList.remove('is-auto-scrolling');}
-      function startGalleryLoop(){
+      function startGalleryLoop(initialProgress){
         if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
         var activeColumns=[];
         galleryColumns.forEach(function(item,index){
@@ -322,9 +325,10 @@
           item.column.scrollTop=0;
           var loopHeight=loopStart.offsetTop-item.track.offsetTop;
           if(!loopHeight||item.column.scrollHeight-item.column.clientHeight<loopHeight)return;
-          activeColumns.push({column:item.column,loopHeight:loopHeight,position:0,speed:.027+index*.002});
+          var progress=initialProgress&&initialProgress[index];
+          activeColumns.push({column:item.column,loopHeight:loopHeight,position:progress==null?item.column.scrollTop:progress*loopHeight,speed:.027+index*.002});
         });
-        if(activeColumns.length!==galleryColumns.length){galleryLoopRetry=window.setTimeout(scheduleGalleryLoop,160);return;}
+        if(!activeColumns.length)return;
         var paused=false,lastTime=0,frame=0,handlers=[],resumeTimer=0,dragging=false,dragPointerId=null,lastPointerY=0,suppressClick=false,hoverPaused=false,manualPaused=false,nativeScrollSession=false,nativePointerActive=false;
         function listen(target,event,handler,options){target.addEventListener(event,handler,options);handlers.push(function(){target.removeEventListener(event,handler,options);});}
         function usesNativeScroll(event){return event.pointerType==='touch'||event.pointerType==='pen';}
@@ -365,8 +369,17 @@
         galleryLoopStops.push(function(){window.cancelAnimationFrame(frame);window.clearTimeout(resumeTimer);galleryWindow.classList.remove('is-dragging');handlers.forEach(function(remove){remove();});});
       }
       buildGalleryColumns();
-      function scheduleGalleryLoop(){stopGalleryLoop();galleryLoopFrame=window.requestAnimationFrame(startGalleryLoop);}
-      function refreshGalleryLayout(){if(!galleryWindow.classList.contains('is-auto-scrolling'))scheduleGalleryLoop();}
+      function scheduleGalleryLoop(){
+        window.clearTimeout(galleryLoopRetry);
+        var progress=galleryColumns.map(function(item){
+          var loopStart=Array.prototype.slice.call(item.track.querySelectorAll('[data-gallery-loop-copy="true"]')).find(function(button){return !button.classList.contains('is-filtered');});
+          var loopHeight=loopStart?loopStart.offsetTop-item.track.offsetTop:0;
+          return loopHeight?item.column.scrollTop/loopHeight:0;
+        });
+        stopGalleryLoop();
+        galleryLoopFrame=window.requestAnimationFrame(function(){startGalleryLoop(progress);});
+      }
+      function refreshGalleryLayout(){window.clearTimeout(galleryLayoutTimer);galleryLayoutTimer=window.setTimeout(scheduleGalleryLoop,140);}
       function renderFilter(){document.querySelectorAll('[data-filter]').forEach(function(button){var selected=button.dataset.filter===activeFilter;button.setAttribute('aria-pressed',String(selected));});galleryButtons.forEach(function(button){button.classList.toggle('is-filtered',activeFilter!=='all'&&button.dataset.category!==activeFilter);});document.getElementById('archive-description').textContent=archiveNotes[activeFilter][language];scheduleGalleryLoop();}
       function renderLanguage(chooseNewImage) { var copy=translations[language]; root.dataset.lang=language; document.querySelectorAll('[data-i18n]').forEach(function(element){element.textContent=copy[element.dataset.i18n];}); document.querySelectorAll('[data-i18n-html]').forEach(function(element){element.innerHTML=copy[element.dataset.i18nHtml];}); document.querySelectorAll('[data-placeholder]').forEach(function(element){element.placeholder=copy[element.dataset.placeholder];}); document.querySelector('.language-toggle').textContent=language==='zh'?'EN':'中文'; document.querySelector('.language-toggle').setAttribute('aria-pressed',String(language==='en')); document.documentElement.lang=language==='zh'?'zh-CN':'en'; renderChapter(Boolean(chooseNewImage)); renderModuleRails(); renderFilter(); }
       document.querySelectorAll('[data-chapter]').forEach(function(button){ button.addEventListener('click',function(){ activeChapter=button.dataset.chapter; document.querySelectorAll('[data-chapter]').forEach(function(item){item.setAttribute('aria-selected','false');}); button.setAttribute('aria-selected','true'); renderChapter(true); startChapterImageRotation(); }); });
